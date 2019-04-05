@@ -4,7 +4,6 @@ const SCORE_NOT = 'not';
 const SCORE_POOR = 'poor';
 
 const VOWELS = ['A','E','I','O','U','Y'];
-const INGNORE_VOWEL = 'Y';
 const ALLOWED = new Set(["AI", "AY", "EA", "EE", "EO", "IO", "OA", "OO", "OY", "YA", "YO", "YU", "BL", "BR", "CH", "CK", "CL", "CR", "DR", "FL", "FR", "GH", "GL", "GR", "KL", "KR", "KW", "PF", "PL", "PR", "SC", "SCH", "SCR", "SH", "SHR", "SK", "SL", "SM", "SN", "SP", "SQ", "ST", "SW", "TH", "THR", "TR", "TW", "WH", "WR"]);
 const POOR_CONSECUTIVE_LETTERS_COUNT = 2;
 
@@ -19,11 +18,9 @@ function getScrambleScore(input, word) {
     return SCORE_NOT;
   }
   const isReal = isLooksReal(input);
-  console.log(isReal, 'is real')
   if (isReal && isHard(input, word)) {
     return SCORE_HARD;
   }
-  console.log(isPoor(input, word), 'isPoor(input, word)<<<<')
   if (!isReal && isPoor(input, word)) {
     return SCORE_POOR;
   }
@@ -40,43 +37,24 @@ function isContainVowels(input) {
 }
 
 function isLooksReal(input) {
-  if (isVowelsAndConsonantsInOrder(input)) {
-    return true;
-  }
-  console.log('should be here <<<')
-  for (let i = 1; i < input.length; i++ ) {
+  for (let i = 1; i < input.length; i++) {
     const prev = input[i - 1];
     const cur = input[i];
-    if (!VOWELS.includes(cur) && VOWELS.includes(prev)) {
+    const isPrevVowel = VOWELS.includes(prev);
+    const isCurVowel = VOWELS.includes(cur);
+    if (ALLOWED.has(prev + cur)
+        || (isPrevVowel && !isCurVowel)
+        || (!isPrevVowel && isCurVowel)
+    ) {
       continue;
     }
-    if (!ALLOWED.has(prev + cur)) {
-      console.log('Not allowed', prev + cur)
-      return false;
-    }
+    return false;
   }
   return true;
 }
 
-function isVowelsAndConsonantsInOrder(input) {
-  // if letters alternate between vowels and consonants
-  let isStartWithVowel = VOWELS.includes(input[0]);
-  for (let i = 1; i < input.length; i++ ) {
-    const prev = input[i - 1];
-    const cur = input[i];
-    if (isStartWithVowel && (VOWELS.includes(cur) || !VOWELS.includes(prev))) {
-      return false;
-    }
-    if(!isStartWithVowel && (!VOWELS.includes(cur) || VOWELS.includes(prev))) {
-      return false;
-    }
-    isStartWithVowel = !isStartWithVowel;
-  }
-  return true;
-}
-
-function isPoor(input, word) {
-  console.log('IS oiir', getConsecutiveLettersCount(input, word))
+//if the first letter  OR (any two consecutive letters are in the correct place and the word doesn’t look  real)
+function isPoor(input, word, isReal) {
   return input[0] === word[0]
     || getConsecutiveLettersCount(input, word) === POOR_CONSECUTIVE_LETTERS_COUNT;
 }
@@ -88,7 +66,6 @@ function isHard(input, word) {
 function getConsecutiveLettersCount(input, word) {
   return input.split('').filter((char, position) => word[position] === char).length;
 }
-console.log('It should return fair for INOYR', getScrambleScore('INOYR', 'IRONY'), getScrambleScore('INOYR', 'IRONY') === SCORE_FAIR);
 
 console.log('It should return not for SWR-WSR', getScrambleScore('SWR', 'WSR') === SCORE_NOT);
 console.log('It should return not for SW-WS', getScrambleScore('SW', 'WS') === SCORE_NOT);
