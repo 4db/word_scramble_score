@@ -7,6 +7,11 @@ const VOWELS = ['A','E','I','O','U','Y'];
 const ALLOWED = new Set(["AI", "AY", "EA", "EE", "EO", "IO", "OA", "OO", "OY", "YA", "YO", "YU", "BL", "BR", "CH", "CK", "CL", "CR", "DR", "FL", "FR", "GH", "GL", "GR", "KL", "KR", "KW", "PF", "PL", "PR", "SC", "SCH", "SCR", "SH", "SHR", "SK", "SL", "SM", "SN", "SP", "SQ", "ST", "SW", "TH", "THR", "TR", "TW", "WH", "WR"]);
 const POOR_CONSECUTIVE_LETTERS_COUNT = 2;
 
+/*
+ * @param {string} input
+ * @param {string} word
+ * @return {score string}
+ */
 function getScrambleScore(input, word) {
   input.toUpperCase();
   word.toUpperCase();
@@ -30,6 +35,10 @@ function getScrambleScore(input, word) {
   return SCORE_FAIR;
 }
 
+/*
+ * @param {string} input
+ * @return {boolean}
+ */
 function isContainVowels(input) {
   for (let i = 0; i < VOWELS.length; i++) {
     if (input.includes(VOWELS[i])) {
@@ -39,6 +48,10 @@ function isContainVowels(input) {
   return false;
 }
 
+/*
+ * @param {string} input
+ * @return {boolean}
+ */
 function isLooksReal(input) {
   for (let i = 1; i < input.length; i++) {
     const prev = input[i - 1];
@@ -56,28 +69,49 @@ function isLooksReal(input) {
   return true;
 }
 
-//if the first letter  OR (any two consecutive letters are in the correct place and the word doesn’t look  real)
+/*
+ * @param {string} input
+ * @param {string} word
+ * @param {boolean} isReal
+ * @return {boolean}
+ */
 function isPoor(input, word, isReal) {
   return input[0] === word[0]
     || getConsecutiveLettersCount(input, word) === POOR_CONSECUTIVE_LETTERS_COUNT;
 }
 
+/*
+ * @param {string} input
+ * @param {string} word
+ * @return {boolean}
+ */
 function isHard(input, word) {
   return getConsecutiveLettersCount(input, word) === 0;
 }
 
+/*
+ * @param {string} input
+ * @param {string} word
+ * @return {number}
+ */
 function getConsecutiveLettersCount(input, word) {
   return input.split('').filter((char, position) => word[position] === char).length;
 }
 
+/*
+ * @param {array} arr
+ * @return {array}
+ */
 function printScrambleScoreByArr(arr) {
   return arr.map(str => {
     const ar = str.split(' ');
-    const score = getScrambleScore(ar[0], ar[1]);
+    const input = ar[0];
+    const output = ar[1];
+    const score = getScrambleScore(input, output);
     if (score === SCORE_NOT) {
-      return ar[0] + ' is ' + score + ' a scramble of ' + ar[1];
+      return input + ' is ' + score + ' a scramble of ' + output;
     }
-    return ar[0] + ' is a ' + score + ' scramble of ' + ar[1];
+    return input + ' is a ' + score + ' scramble of ' + output;
   });
 }
 
@@ -101,16 +135,15 @@ const EXPECTED_OUTPUT = [
   'IOYRN is a poor scramble of IRONY',
 ];
 
-console.log('It should return EXPECTED_OUTPUT', JSON.stringify(printScrambleScoreByArr(TEST_INPUT)) === JSON.stringify(EXPECTED_OUTPUT));
-
-console.log('It should return not for SWR-WSR', getScrambleScore('SWR', 'WSR') === SCORE_NOT);
-console.log('It should return not for SW-WS', getScrambleScore('SW', 'WS') === SCORE_NOT);
-console.log('It should return not same word', getScrambleScore('IRONY', 'IRONY') === SCORE_NOT);
-console.log('It should return not empty', getScrambleScore('', '') === SCORE_NOT);
-console.log('It should return not for ""', getScrambleScore('', 'IRONY') === SCORE_NOT);
-console.log('It should return not for IRONYY', getScrambleScore('IRONYY', 'IRONY') === SCORE_NOT);
-console.log('It should return poor for IOYRN', getScrambleScore('IOYRN', 'IRONY') === SCORE_POOR);
-console.log('It should return hard for ONYRI', getScrambleScore('ONYRI', 'IRONY') === SCORE_HARD);
-console.log('It should return fair for MAPS', getScrambleScore('MAPS', 'SPAM') === SCORE_FAIR);
-console.log('It should return fair for RIONY', getScrambleScore('RIONY', 'IRONY') === SCORE_FAIR);
-console.log('It should return fair for INOYR', getScrambleScore('INOYR', 'IRONY') === SCORE_FAIR);
+console.log('It should return EXPECTED_OUTPUT:', JSON.stringify(printScrambleScoreByArr(TEST_INPUT)) === JSON.stringify(EXPECTED_OUTPUT) ? 'PASS' : 'FAIL');
+console.log('It should return not for SWR-WSR:', getScrambleScore('SWR', 'WSR') === SCORE_NOT ? 'PASS' : 'FAIL');
+console.log('It should return not for SW-WS:', getScrambleScore('SW', 'WS') === SCORE_NOT ? 'PASS' : 'FAIL');
+console.log('It should return not same word:', getScrambleScore('IRONY', 'IRONY') === SCORE_NOT ? 'PASS' : 'FAIL');
+console.log('It should return not empty:', getScrambleScore('', '') === SCORE_NOT ? 'PASS' : 'FAIL');
+console.log('It should return not for "":', getScrambleScore('', 'IRONY') === SCORE_NOT ? 'PASS' : 'FAIL');
+console.log('It should return not for IRONYY:', getScrambleScore('IRONYY', 'IRONY') === SCORE_NOT ? 'PASS' : 'FAIL');
+console.log('It should return poor for IOYRN:', getScrambleScore('IOYRN', 'IRONY') === SCORE_POOR ? 'PASS' : 'FAIL');
+console.log('It should return hard for ONYRI:', getScrambleScore('ONYRI', 'IRONY') === SCORE_HARD ? 'PASS' : 'FAIL');
+console.log('It should return fair for MAPS:', getScrambleScore('MAPS', 'SPAM') === SCORE_FAIR ? 'PASS' : 'FAIL');
+console.log('It should return fair for RIONY:', getScrambleScore('RIONY', 'IRONY') === SCORE_FAIR ? 'PASS' : 'FAIL');
+console.log('It should return fair for INOYR:', getScrambleScore('INOYR', 'IRONY') === SCORE_FAIR ? 'PASS' : 'FAIL');
