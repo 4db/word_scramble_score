@@ -13,8 +13,8 @@ const POOR_CONSECUTIVE_LETTERS_COUNT = 2;
  * @return {score string}
  */
 function getScrambleScore(input, word) {
-  input.toUpperCase();
-  word.toUpperCase();
+  input = input.toUpperCase();
+  word = word.toUpperCase();
 
   if (input.length < 2
       ||input.length !== word.length
