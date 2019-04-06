@@ -55,12 +55,8 @@ label {
 }
 .button.test{
   cursor: pointer;
-  background-color: #4CAF50;
+  background-color: #444;
   margin-left: 0;
-}
-.button.test:hover {
-  cursor: pointer;
-  background-color: #45a049;
 }
 .button.not{
   background-color: #f44336;
@@ -69,7 +65,7 @@ label {
   background-color: #e7e7e7;
 }
 .button.fair{
-  background-color: yellow;
+  background-color: #F0E68C;
 }
 .button.hard{
   background-color: #008CBA;
@@ -80,38 +76,118 @@ label {
 <div class="container">
     <div class="row">
       <div class="col-25">
-        <input type="text" id="fname" name="firstname" placeholder="Your input..">
+        <input type="text" id="input"placeholder="Your input..">
       </div>
       <div class="col-25">
-        <button class="button hard">fair</button>
+        <button class="button hard" id="score">fair</button>
       </div>
       <div class="col-25">
-        <input type="text" id="fname" name="firstname" placeholder="Your ouput..">
+        <input type="text" id="output" placeholder="Your ouput..">
       </div>
       <div class="col-25">
-        <button class="button get">GetScore</button>
+        <button class="button get" onclick="getScoreClick()">GetScore</button>
       </div>
     </div>
     <div class="row">
       <div class="col-25">
-        <button class="button test">Run Tests</button>
+        <button class="button test">Sample output:</button>
       </div>
     </div>
     <div class="row">
       <div class="col-25">
-        <input type="text" id="fname" name="firstname" placeholder="Your input..">
+        <input type="text" value="MAPS" disabled>
       </div>
       <div class="col-25">
-        <button class="button hard">fair</button>
+        <button class="button" id="sample1" disabled></button>
       </div>
       <div class="col-25">
-        <input type="text" id="fname" name="firstname" placeholder="Your ouput..">
+        <input type="text" value="SPAM" disabled>
+      </div>
+      <div class="col-25"></div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <input type="text" value="RIONY" disabled>
       </div>
       <div class="col-25">
-        <button class="button get">fair</button>
+        <button class="button" id="sample2" disabled></button>
       </div>
+      <div class="col-25">
+        <input type="text" value="IRONY" disabled>
+      </div>
+      <div class="col-25"></div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <input type="text" value="ONYRI" disabled>
+      </div>
+      <div class="col-25">
+        <button class="button" id="sample3" disabled></button>
+      </div>
+      <div class="col-25">
+        <input type="text" value="IRONY" disabled>
+      </div>
+      <div class="col-25"></div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <input type="text" value="IRONY" disabled>
+      </div>
+      <div class="col-25">
+        <button class="button" id="sample4" disabled></button>
+      </div>
+      <div class="col-25">
+        <input type="text" value="IRONY" disabled>
+      </div>
+      <div class="col-25"></div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <input type="text" value="INOYR" disabled>
+      </div>
+      <div class="col-25">
+        <button class="button" id="sample5" disabled></button>
+      </div>
+      <div class="col-25">
+        <input type="text" value="IRONY" disabled>
+      </div>
+      <div class="col-25"></div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <input type="text" value="IOYRN" disabled>
+      </div>
+      <div class="col-25">
+        <button class="button" id="sample6" disabled></button>
+      </div>
+      <div class="col-25">
+        <input type="text" value="IRONY" disabled>
+      </div>
+      <div class="col-25"></div>
     </div>
 </div>
 
+<script src="script.js"></script>
+<script type="text/javascript">
+function getBtnByScore(id, input, output) {
+  const score = getScrambleScore(input, output);
+  const el = document.getElementById(id);
+  el.innerText = score;
+  el.className = 'button ' + score;
+}
+
+function getScoreClick() {
+  const input = document.getElementById('input').value;
+  const output = document.getElementById('output').value;
+  getBtnByScore('score', input, output);
+}
+
+getBtnByScore('sample1', 'MAPS', 'SPAM');
+getBtnByScore('sample2', 'RIONY', 'IRONY');
+getBtnByScore('sample3', 'ONYRI', 'IRONY');
+getBtnByScore('sample4', 'IRONY', 'IRONY');
+getBtnByScore('sample5', 'INOYR', 'IRONY');
+getBtnByScore('sample6', 'IOYRN', 'IRONY');
+</script>
 </body>
 </html>
