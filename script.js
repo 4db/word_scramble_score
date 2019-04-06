@@ -8,6 +8,9 @@ const ALLOWED = new Set(["AI", "AY", "EA", "EE", "EO", "IO", "OA", "OO", "OY", "
 const POOR_CONSECUTIVE_LETTERS_COUNT = 2;
 
 function getScrambleScore(input, word) {
+  input.toUpperCase();
+  word.toUpperCase();
+
   if (input.length < 2
       ||input.length !== word.length
       || input === word
@@ -66,6 +69,39 @@ function isHard(input, word) {
 function getConsecutiveLettersCount(input, word) {
   return input.split('').filter((char, position) => word[position] === char).length;
 }
+
+function printScrambleScoreByArr(arr) {
+  return arr.map(str => {
+    const ar = str.split(' ');
+    const score = getScrambleScore(ar[0], ar[1]);
+    if (score === SCORE_NOT) {
+      return ar[0] + ' is ' + score + ' a scramble of ' + ar[1];
+    }
+    return ar[0] + ' is a ' + score + ' scramble of ' + ar[1];
+  });
+}
+
+console.log('Scramble test cases: ');
+
+const TEST_INPUT = [
+  'MAPS SPAM',
+  'RIONY IRONY',
+  'ONYRI IRONY',
+  'IRONY IRONY',
+  'INOYR IRONY',
+  'IOYRN IRONY',
+];
+
+const EXPECTED_OUTPUT = [
+  'MAPS is a fair scramble of SPAM',
+  'RIONY is a fair scramble of IRONY',
+  'ONYRI is a hard scramble of IRONY',
+  'IRONY is not a scramble of IRONY',
+  'INOYR is a fair scramble of IRONY',
+  'IOYRN is a poor scramble of IRONY',
+];
+
+console.log('It should return EXPECTED_OUTPUT', JSON.stringify(printScrambleScoreByArr(TEST_INPUT)) === JSON.stringify(EXPECTED_OUTPUT));
 
 console.log('It should return not for SWR-WSR', getScrambleScore('SWR', 'WSR') === SCORE_NOT);
 console.log('It should return not for SW-WS', getScrambleScore('SW', 'WS') === SCORE_NOT);
